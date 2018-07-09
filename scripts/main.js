@@ -15,7 +15,7 @@ class Application {
 		this.loading_system = new LoadingSystem(this);
 		this.dev_build = false;
 		this.is_desktop_app = true;
-		this.app_version = "v1.0.0-pre3-cv1.7.0";
+		this.app_version = "v1.0.0-pre4-cv1.7.0";
 	}
 
 	start() {
@@ -29,33 +29,37 @@ class Application {
 			console.log("No mobile device detected. Loading data...");
 
 			//Register events
-			this.loading_system.onReady = function(pSelf) {
-				pSelf.editor_screen = new EditorScreen(this, pSelf.loading_system.getCachedData("data/html/editor_template.html"));
-				pSelf.openScreen(pSelf.editor_screen, true);
-				pSelf.editor_screen.init();
+			this.loading_system.onReady = function() {
+				this.editor_screen = new EditorScreen(this, this.loading_system.getCachedData("data/html/editor_template.html"));
+				this.openScreen(this.editor_screen, true);
+				this.editor_screen.init();
 
-				if(pSelf.is_desktop_app) {
+				if(this.is_desktop_app) {
 					document.querySelector("nav").style.display = "inline-block";
-					pSelf.intermediary = require("./scripts/intermediary.js");
+					this.intermediary = require("./scripts/intermediary.js");
 
 					//SETUP CONFIG
-					pSelf.fs = require("fs");
-					pSelf.config = {};
-					pSelf.fs.readFile("./data/config.json", 'utf8', callback.bind(pSelf));
-					function callback(pErr, pData) {
-						return function() {
-							pSelf.config = JSON.parse(pData);
-							if(pErr) console.warn(pErr);
-
-							//HANDLE PROJECT BAR
-							if(pSelf.config.project_path) pSelf.intermediary.renderProject(pSelf.config.project_path);
-						}.bind(pSelf)();
+					this.fs = require("fs");
+					this.config = {};
+					this.data_dir = __dirname.split("\\").slice(0, -1).join("\\");
+					if(!this.fs.existsSync(this.data_dir + "/data")) {
+						this.fs.mkdirSync(this.data_dir + "/data");
+						if(!this.fs.existsSync(this.data_dir + "/data/config.json")) {
+							this.fs.writeFileSync(this.data_dir + "/data/config.json", "{}");
+						}
 					}
+					this.fs.readFile(this.data_dir + "/data/config.json", 'utf8', function(pErr, pData){
+						this.config = JSON.parse(pData);
+						if(pErr) console.warn(pErr);
+
+						//HANDLE PROJECT BAR
+						if(this.config.project_path) this.intermediary.renderProject(this.config.project_path);
+					}.bind(this));
 				}
 
 				//Initialize tabs
-				pSelf.tab_manager = new TabManager(document.getElementById("tab-bar")).create();
-				pSelf.tab_manager.addTab("blank.json", {
+				this.tab_manager = new TabManager(document.getElementById("tab-bar")).create();
+				this.tab_manager.addTab("blank.json", {
 					"minecraft:entity": {
 						"format_version": "1.6.0",
 						"component_groups": {},
@@ -63,22 +67,22 @@ class Application {
 						"events": {}
 					}
 				});
-				pSelf.tab_manager.start();
+				this.tab_manager.start();
 
 				//Documentation Parser
-				pSelf.documentation_parser = new DocumentationParser(pSelf.loading_system);
+				this.documentation_parser = new DocumentationParser(this.loading_system);
 
 				//Documentation
-				pSelf.documentation = new Documentation(pSelf);
+				this.documentation = new Documentation(this);
 
 				//Module system
-				pSelf.module_system = new ModuleSystem(pSelf);
-				pSelf.extension_system = new ExtensionSystem(pSelf, pSelf.loading_system.getCachedData("extensions"));
+				this.module_system = new ModuleSystem(this);
+				this.extension_system = new ExtensionSystem(this, this.loading_system.getCachedData("extensions"));
 
-				if(!pSelf.dev_build) document.getElementById("infobar").style.display = "none";
-				if(pSelf.dev_build) document.getElementById("infobar").style.display = "block";
-			};
-			this.loading_system.onChange = function(pProgress, pSelf) {
+				if(!this.dev_build) document.getElementById("infobar").style.display = "none";
+				if(this.dev_build) document.getElementById("infobar").style.display = "block";
+			}.bind(this);
+			this.loading_system.onChange = function(pProgress) {
 				document.body.querySelector("p").innerText = "Progress: " + pProgress;
 			};
 			//Load data
@@ -87,7 +91,7 @@ class Application {
 	}
 
 	updateConfig() {
-		this.fs.writeFile("./data/config.json", JSON.stringify(this.config, undefined, "\t"), () => console.log("Updated config.json!"));
+		this.fs.writeFile(this.data_dir + "/data/config.json", JSON.stringify(this.config, undefined, "\t"));
 	}
 
 	/**
