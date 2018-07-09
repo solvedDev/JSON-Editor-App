@@ -15,10 +15,26 @@ class Application {
 		this.loading_system = new LoadingSystem(this);
 		this.dev_build = false;
 		this.is_desktop_app = true;
+
+		//SETUP CONFIG
+		if(this.is_desktop_app) {
+			this.fs = require("fs");
+			this.config = {};
+			this.fs.readFile("./data/config.json", 'utf8', callback.bind(this));
+			function callback(pErr, pData) {
+				return function() {
+					this.config = JSON.parse(pData);
+					if(pErr) console.warn(pErr);
+
+					//HANDLE PROJECT BAR
+					if(this.config.project_path) this.intermediary.renderProject(this.config.project_path);
+				}.bind(this)();
+			}
+		}
 	}
 
 	start() {
-		var is_mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800 && window.innerHeight <= 600;
+		let is_mobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent) || window.innerWidth <= 800 && window.innerHeight <= 600;
 		if(this.is_desktop_app) is_mobile = false;
 
 		if(is_mobile){
@@ -71,6 +87,10 @@ class Application {
 		}
 	}
 
+	updateConfig() {
+		this.fs.writeFile("./data/config.json", JSON.stringify(this.config, undefined, "\t"), () => console.log("Updated config.json!"));
+	}
+
 	/**
 	 * Opens the screen handed over as a parameter
 	 * @param {Screen} pScreen The screen to open
@@ -80,13 +100,22 @@ class Application {
 		if(pTryDesktop && this.is_desktop_app) {
 			let tmp = document.createElement("div");
 			tmp.innerHTML = pScreen.getHtml();
-			let open_dir = "<div class='center-text' style='position: relative; top: 40%;'><p>Project Folder</p><button id='open-project-folder-btn' class='btn btn-outline-primary center'>Open</button></div>"
+			let open_dir = this.generateDir();
 			document.body.innerHTML = tmp.firstElementChild.outerHTML + "<sidebar class='section'>" + open_dir + "</sidebar><main></main>";
 			tmp.innerHTML = tmp.innerHTML.split("</nav>")[1];
 			document.body.firstElementChild.nextElementSibling.nextElementSibling.innerHTML = tmp.innerHTML;
 		} else {
 			document.body.innerHTML = pScreen.getHtml();
 		}
+	}
+	/**
+	 * Generates project folder
+	 */
+	generateDir() {	
+		return 	`<div class='center-text' style='position: relative; top: 40%;'>
+					<p>Project Folder</p>
+					<button id='open-project-folder-btn' class='btn btn-outline-primary center'>Open</button>
+				</div>`;
 	}
 
 	openPopUp(pText) {

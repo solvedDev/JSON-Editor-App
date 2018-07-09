@@ -85,20 +85,24 @@ open_project.onclick = function(){
 };
 ipcRenderer.on("dirPath", function(pEvent, pPath) {
 	if(pPath != undefined) {
-		renderProject(pPath);
+		if(app.config.project_path != pPath[0]) {
+			app.config.project_path = pPath[0];
+			app.updateConfig();
+		}
+		renderProject(pPath[0]);
 	}
 });
 function renderProject(pPath) {
 	let sidebar = document.querySelector("sidebar");
-	sidebar.innerHTML = "<div class='up section center-text' style='margin-bottom: 5px;'><h6>" + pPath[0].split("\\").pop() + "</h6><button id='open-project-folder-btn' class='btn btn-outline-primary btn-sm'>New</button></div>";
+	sidebar.innerHTML = "<div class='up section center-text' style='margin-bottom: 5px;'><h6>" + pPath.split("\\").pop() + "</h6><button id='open-project-folder-btn' class='btn btn-outline-primary btn-sm'>New</button></div>";
 	sidebar.innerHTML += "<ul></ul>";
 
-	let files = getFilesInDir(pPath[0]);
+	let files = getFilesInDir(pPath);
 	let list = sidebar.firstElementChild.nextElementSibling;
 	for(let i = 0; i < files.length; i++) {
 		if(files[i].includes(".json")) {
 			let e = document.createElement("LI");
-			e.innerText = files[i].split(pPath[0])[1].slice(1);
+			e.innerText = files[i].split(pPath)[1].slice(1);
 
 			e.onclick = function() {
 				if(!app.tab_manager.isFileOpen(files[i])) {
@@ -140,4 +144,8 @@ function getFilesInDir(pDir, pFiles=[]){
 		}
     }
     return pFiles;
+}
+
+module.exports = {
+	renderProject: renderProject
 }
