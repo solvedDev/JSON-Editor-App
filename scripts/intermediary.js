@@ -1,7 +1,15 @@
 var electron = require("electron");
 const {ipcRenderer} = electron;
 const fs = require("fs");
+const opn = require('opn');
 let l_s;
+
+//EVALUATE APP VERSION
+if(app.is_desktop_app && app.loading_system.getCachedData("data/newest_app_version.txt") != app.app_version) {
+	let c_w = new ConfirmationWindow(document.body, "A new version of this JSON Editor is available. Do you want to update now?", "60%", "15%", function() {
+		opn("https://github.com/solvedDev/JSON-Editor-App/releases");
+	}, undefined, undefined, "Yes", "No").create();
+}
 
 //MAIN WINDOW BTNS
 const close_btn = document.getElementById("close");

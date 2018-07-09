@@ -15,22 +15,7 @@ class Application {
 		this.loading_system = new LoadingSystem(this);
 		this.dev_build = false;
 		this.is_desktop_app = true;
-
-		//SETUP CONFIG
-		if(this.is_desktop_app) {
-			this.fs = require("fs");
-			this.config = {};
-			this.fs.readFile("./data/config.json", 'utf8', callback.bind(this));
-			function callback(pErr, pData) {
-				return function() {
-					this.config = JSON.parse(pData);
-					if(pErr) console.warn(pErr);
-
-					//HANDLE PROJECT BAR
-					if(this.config.project_path) this.intermediary.renderProject(this.config.project_path);
-				}.bind(this)();
-			}
-		}
+		this.app_version = "v1.0.0-pre3-cv1.7.0";
 	}
 
 	start() {
@@ -52,6 +37,20 @@ class Application {
 				if(pSelf.is_desktop_app) {
 					document.querySelector("nav").style.display = "inline-block";
 					pSelf.intermediary = require("./scripts/intermediary.js");
+
+					//SETUP CONFIG
+					pSelf.fs = require("fs");
+					pSelf.config = {};
+					pSelf.fs.readFile("./data/config.json", 'utf8', callback.bind(pSelf));
+					function callback(pErr, pData) {
+						return function() {
+							pSelf.config = JSON.parse(pData);
+							if(pErr) console.warn(pErr);
+
+							//HANDLE PROJECT BAR
+							if(pSelf.config.project_path) pSelf.intermediary.renderProject(pSelf.config.project_path);
+						}.bind(pSelf)();
+					}
 				}
 
 				//Initialize tabs

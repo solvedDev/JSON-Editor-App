@@ -123,6 +123,8 @@ class LoadingSystem extends RequestSystem {
 	 */
 	loadAll() {
 		this.request("load_definition.json", function(pData, pSelf) {
+			if(pSelf.parent.is_desktop_app) pSelf.requestString("data/newest_app_version.txt");
+
 			//HTML
 			for(let i = 0; i < pData.html.length; i++) {
 				pSelf.requestString("data/html/" + pData.html[i]);
