@@ -1,0 +1,15 @@
+{
+  "name": "JSON-Editor",
+  "version": "1.7.0",
+  "description": "An application to develop Minecraft AddOns.",
+  "main": "app.js",
+  "scripts": {
+    "start": "electron .",
+    "build": "electron-packager . --icon=img/icon.ico --asar --overwrite"
+  },
+  "author": "solvedDev",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^1.7.9"
+  }
+}
