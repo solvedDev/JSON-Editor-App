@@ -2,10 +2,18 @@
 A tool for JSON editing. It has color highlighting, collapsible elements and a bunch of other tools which are making your experience with JSON more convenient.
 This repository contains the app version of the JSON Editor.
 
-This editor is made specifically for editing Minecraft behavior files. You can also open & edit other JSON files though.
+The JSON editor is made specifically for editing Minecraft behavior files. You can also open & edit other JSON files though.
 
+![JSON Editor](https://pbs.twimg.com/media/DjRLl7HXcAAHUWK.jpg)
 
 ## Features
- - Auto-completions for all behavior files: Entities, loot tables and trades!
- - Expandable using JSON files: You can set up your own stuff very easily
+ - Rich auto-completions for all behavior files: Entities, loot tables and trades!
+ - UI auto-completions
+ - Expandable AddOn syntax using JSON files: Profit of an effective, new syntax today!
+ - Import JSON files to create a modular, easy to maintain project
  - Color highlighting
+ - built-in file explorer
+ - built-in documentation
+
+
+![JSON Editor](https://pbs.twimg.com/media/DjRLl7OXsAAtXIp.jpg)
