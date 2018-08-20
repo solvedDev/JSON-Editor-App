@@ -9,7 +9,7 @@ The JSON editor is made specifically for editing Minecraft behavior files. You c
 ## Features
  - Rich auto-completions for all behavior files: Entities, loot tables and trades!
  - UI auto-completions
- - Expandable AddOn syntax using JSON files: Profit of an effective, new syntax today!
+ - Expandable AddOn syntax using JSON files: Profit of an effective, new syntax today! [Read more...](https://gist.github.com/solvedDev/5ca88801821769e0082f63b18a7b3f32)
  - Import JSON files to create a modular, easy to maintain project
  - Color highlighting
  - built-in file explorer
