@@ -3,9 +3,7 @@ A tool for JSON editing. It has color highlighting, collapsible elements and a b
 This repository contains the app version of the JSON Editor.
 
 The JSON editor is made specifically for editing Minecraft behavior files. You can also open & edit other JSON files though.
-
-### Download the latest version [here](https://github.com/solvedDev/JSON-Editor-App/releases)!
-
+#### Download the latest version [here](https://github.com/solvedDev/JSON-Editor-App/releases)!
 ![JSON Editor](https://pbs.twimg.com/media/DjRLl7HXcAAHUWK.jpg)
 
 ## Features
