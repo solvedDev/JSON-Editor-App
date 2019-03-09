@@ -1,4 +1,15 @@
-# JSON Editor
+# bridge.
+This project is deprecated in favor of my new addon editor bridge
+#### [Check it out!](https://github.com/solvedDev/bridge./)
+
+
+
+
+-------------
+
+
+
+## JSON Editor
 A tool for JSON editing. It has color highlighting, collapsible elements and a bunch of other tools which are making your experience with JSON more convenient.
 This repository contains the app version of the JSON Editor.
 
