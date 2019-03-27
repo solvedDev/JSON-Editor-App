@@ -1,5 +1,5 @@
 # bridge.
-This project is deprecated in favor of my new addon editor bridge
+This project is deprecated in favor of my new addon editor "bridge."
 #### [Check it out!](https://github.com/solvedDev/bridge./)
 
 
